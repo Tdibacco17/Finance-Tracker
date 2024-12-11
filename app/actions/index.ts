@@ -41,6 +41,7 @@ export const AddDataToSheet = async (ticker: string, cantidad: string, fecha: st
     // Crear la nueva fila con los datos de ticker, cantidad, fecha y las fórmulas dinámicas
     const newRow = [
         [
+            `=GOOGLEFINANCE("${ticker}";"name")`,
             ticker,  // Ticker ingresado
             cantidad,  // Cantidad ingresada
             fecha,  // Fecha ingresada
