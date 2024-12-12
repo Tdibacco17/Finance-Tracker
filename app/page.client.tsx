@@ -1,8 +1,9 @@
 'use client'
 import { useState } from 'react';
-import { AddDataToSheet, ApiResponse, DeleteRowFromSheet, SheetData, SheetRow } from './actions';
+import { AddDataToSheet, ApiResponse, SheetData, SheetRow } from './actions';
+// DeleteRowFromSheet,
 
-export default function HomePageClient({ sheetData }: { sheetData: SheetData }) {
+export default function HomePageClient({ sheetData1, sheetData2 }: { sheetData1: SheetData, sheetData2: SheetData }) {
     const [ticker, setTicker] = useState('');
     const [cantidad, setCantidad] = useState('');
     const [fecha, setFecha] = useState('');
@@ -22,40 +23,62 @@ export default function HomePageClient({ sheetData }: { sheetData: SheetData }) 
         }
     };
 
-    const handleDeleteRow = async (index: number) => {
-        const response = await DeleteRowFromSheet(index + 1); // +1 porque el índice de Google Sheets es 1-based
+    // const handleDeleteRow = async (index: number) => {
+    //     const response = await DeleteRowFromSheet(index + 1); // +1 porque el índice de Google Sheets es 1-based
 
-        if (response.success) {
-            alert('Fila eliminada correctamente');
-        } else {
-            alert('Hubo un error al eliminar la fila');
-        }
-    };
+    //     if (response.success) {
+    //         alert('Fila eliminada correctamente');
+    //     } else {
+    //         alert('Hubo un error al eliminar la fila');
+    //     }
+    // };
 
     return (
         <div>
-            <div className="flex flex-col gap-4">
-                {sheetData?.length !== 0 && sheetData.map((sheetRowData: SheetRow, index: number) => {
-                    return (
-                        <div className="flex gap-4" key={`${ticker}-${index}`}>
-                            {sheetRowData.map((rowData: string, secondIndex: number) => {
-                                return (
-                                    <div className="flex gap-4" key={`row-${index}-cell-${secondIndex}`}>
-                                        <p className="w-40">
-                                            {rowData}
-                                        </p>
-                                    </div>
-                                );
-                            })}
-                            {index > 0 && <button
+
+            <div className="flex flex-col gap-12">
+                <div className='flex flex-col gap-2'>
+                    <p>Historial de compras</p>
+                    {sheetData1?.length !== 0 && sheetData1.map((sheetRowData: SheetRow, index: number) => {
+                        return (
+                            <div className="flex gap-2|" key={`${ticker}-${index}`}>
+                                {sheetRowData.map((rowData: string, secondIndex: number) => {
+                                    return (
+                                        <div className="flex gap-4" key={`row-${index}-cell-${secondIndex}`}>
+                                            <p className="w-40">
+                                                {rowData}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
+                                {/* {index > 0 && <button
                                 className="bg-red-500/30 text-white p-2"
                                 onClick={() => handleDeleteRow(index)}
                             >
                                 Eliminar
-                            </button>}
-                        </div>
-                    )
-                })}
+                            </button>} */}
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className='flex flex-col gap-4'>
+                    <p>Portafolio</p>
+                    {sheetData2?.length !== 0 && sheetData2.map((sheetRowData: SheetRow, index: number) => {
+                        return (
+                            <div className="flex gap-4" key={`${ticker}-${index}`}>
+                                {sheetRowData.map((rowData: string, secondIndex: number) => {
+                                    return (
+                                        <div className="flex gap-4" key={`row-${index}-cell-${secondIndex}`}>
+                                            <p className="w-40">
+                                                {rowData}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
 
             <div className="flex justify-center items-center min-h-screen">
@@ -70,7 +93,7 @@ export default function HomePageClient({ sheetData }: { sheetData: SheetData }) 
                     />
                     <input
                         type="number"
-                        placeholder="Precio de compra: 6.329,00"
+                        placeholder="Precio de compra: 6329.00"
                         value={precioCompra}
                         onChange={(e) => setPrecioCompra(e.target.value)}
                         required
